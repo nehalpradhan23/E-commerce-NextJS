@@ -1,6 +1,6 @@
 "use client";
 import { GlobalContext } from "@/context";
-import { adminNavOptions, navOptions, styles } from "@/utils";
+import { adminNavOptions, navOptions } from "@/utils";
 import React, { useContext } from "react";
 import CommonModal from "../CommonModal";
 
@@ -69,23 +69,35 @@ export default function Navbar() {
           <div className="flex md:order-2 gap-3">
             {!isAdminView && isAuthUser ? (
               <>
-                <button className={styles.button}>Account</button>
-                <button className={styles.button}>Cart</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  Account
+                </button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  Cart
+                </button>
               </>
             ) : null}
             {/* switch user admin/client ======================================== */}
             {user?.role === "admin" ? (
               isAdminView ? (
-                <button className={styles.button}>Client View</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  Client View
+                </button>
               ) : (
-                <button className={styles.button}>Admin view</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  Admin view
+                </button>
               )
             ) : null}
             {/* log in/out button ======================================== */}
             {isAuthUser ? (
-              <button className={styles.button}>Logout</button>
+              <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                Logout
+              </button>
             ) : (
-              <button className={styles.button}>Login</button>
+              <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                Login
+              </button>
             )}
             {/* small screen nav open button ====================================================== */}
             <button
