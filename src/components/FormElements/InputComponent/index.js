@@ -20,5 +20,3 @@ export default function InputComponent({
     </div>
   );
 }
-
-// 1:1:24
