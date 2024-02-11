@@ -6,6 +6,7 @@ import { registrationFormControls } from "@/utils";
 import { useState } from "react";
 import Loading from "./loading";
 import { registerNewUser } from "@/services/register";
+import { useRouter } from "next/navigation";
 
 const initialFormData = {
   name: "",
@@ -17,6 +18,7 @@ const initialFormData = {
 export default function Register() {
   const [formData, setFormData] = useState(initialFormData);
   const [isRegistered, setIsRegistered] = useState(false);
+  const router = useRouter();
   // console.log(formData, "formdata");
 
   function isFormValid() {
@@ -36,20 +38,20 @@ export default function Register() {
     // setPageLevelLoader(true);
     const data = await registerNewUser(formData);
 
-    // if (data.success) {
-    //   toast.success(data.message, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    //   setIsRegistered(true);
-    //   setPageLevelLoader(false);
-    //   setFormData(initialFormData);
-    // } else {
-    //   toast.error(data.message, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    //   setPageLevelLoader(false);
-    //   setFormData(initialFormData);
-    // }
+    if (data.success) {
+      // toast.success(data.message, {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
+      setIsRegistered(true);
+      // setPageLevelLoader(false);
+      setFormData(initialFormData);
+    } else {
+      // toast.error(data.message, {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
+      // setPageLevelLoader(false);
+      setFormData(initialFormData);
+    }
 
     // console.log(data);
   }

@@ -3,12 +3,10 @@ import { GlobalContext } from "@/context";
 import { adminNavOptions, navOptions } from "@/utils";
 import React, { useContext } from "react";
 import CommonModal from "../CommonModal";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const isAdminView = false;
-const isAuthUser = true;
-const user = {
-  role: "admin",
-};
 
 function NavItems({ isModalView = false }) {
   return (
@@ -47,11 +45,28 @@ function NavItems({ isModalView = false }) {
   );
 }
 
-// =======================================================================================
+// ==============================================================================
 export default function Navbar() {
-  const { showNavModal, setShowNavModal } = useContext(GlobalContext);
+  const {
+    showNavModal,
+    setShowNavModal,
+    user,
+    setUser,
+    isAuthUser,
+    setIsAuthUser,
+  } = useContext(GlobalContext);
 
-  // =======================================================================================
+  const router = useRouter();
+
+  function handleLogout() {
+    setIsAuthUser(false);
+    setUser(null);
+    Cookies.remove("token");
+    localStorage.clear();
+    router.push("/");
+  }
+
+  // =============================================================================
   return (
     <>
       <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
@@ -91,11 +106,17 @@ export default function Navbar() {
             ) : null}
             {/* log in/out button ======================================== */}
             {isAuthUser ? (
-              <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+              <button
+                onClick={handleLogout}
+                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+              >
                 Logout
               </button>
             ) : (
-              <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+              <button
+                onClick={() => router.push("/login")}
+                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+              >
                 Login
               </button>
             )}
