@@ -4,11 +4,9 @@ import { adminNavOptions, navOptions } from "@/utils";
 import React, { useContext } from "react";
 import CommonModal from "../CommonModal";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-const isAdminView = false;
-
-function NavItems({ isModalView = false }) {
+function NavItems({ isModalView = false, isAdminView, router }) {
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
@@ -57,6 +55,8 @@ export default function Navbar() {
   } = useContext(GlobalContext);
 
   const router = useRouter();
+  const pathname = usePathname();
+  // console.log(pathname);
 
   function handleLogout() {
     setIsAuthUser(false);
@@ -65,6 +65,8 @@ export default function Navbar() {
     localStorage.clear();
     router.push("/");
   }
+
+  const isAdminView = pathname.includes("admin-view");
 
   // =============================================================================
   return (
@@ -95,11 +97,17 @@ export default function Navbar() {
             {/* switch user admin/client ======================================== */}
             {user?.role === "admin" ? (
               isAdminView ? (
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                <button
+                  onClick={() => router.push("/")}
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                >
                   Client View
                 </button>
               ) : (
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                <button
+                  onClick={() => router.push("admin-view")}
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                >
                   Admin view
                 </button>
               )
@@ -145,14 +153,15 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-          <NavItems />
+          <NavItems isAdminView={isAdminView} router={router} />
         </div>
       </nav>
+      {/* for mobile view */}
       <CommonModal
         showModalTitle={false}
         mainContent={
           <NavItems
-            // router={router}
+            router={router}
             isModalView={true}
             isAdminView={isAdminView}
           />
