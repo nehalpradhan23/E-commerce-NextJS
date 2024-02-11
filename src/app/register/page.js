@@ -2,11 +2,14 @@
 
 import InputComponent from "@/components/FormElements/InputComponent";
 import SelectComponent from "@/components/FormElements/SelectComponent";
-import { registrationFormControls } from "@/utils";
-import { useState } from "react";
-import Loading from "./loading";
+import ComponentLevelLoader from "@/components/Loader/componentlevel";
+import Notification from "@/components/Notification";
+import { GlobalContext } from "@/context";
 import { registerNewUser } from "@/services/register";
+import { registrationFormControls } from "@/utils";
 import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const initialFormData = {
   name: "",
@@ -18,6 +21,9 @@ const initialFormData = {
 export default function Register() {
   const [formData, setFormData] = useState(initialFormData);
   const [isRegistered, setIsRegistered] = useState(false);
+  const { pageLevelLoader, setPageLevelLoader, isAuthUser } =
+    useContext(GlobalContext);
+
   const router = useRouter();
   // console.log(formData, "formdata");
 
@@ -35,26 +41,31 @@ export default function Register() {
 
   // register submit =========================================================================
   async function handleRegisterOnSubmit() {
-    // setPageLevelLoader(true);
+    setPageLevelLoader(true);
     const data = await registerNewUser(formData);
 
     if (data.success) {
-      // toast.success(data.message, {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
+      toast.success(data.message, {
+        // position: toast.POSITION.TOP_RIGHT,
+        position: "top-right",
+      });
       setIsRegistered(true);
-      // setPageLevelLoader(false);
+      setPageLevelLoader(false);
       setFormData(initialFormData);
     } else {
-      // toast.error(data.message, {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
-      // setPageLevelLoader(false);
+      toast.error(data.message, {
+        // position: toast.POSITION.TOP_RIGHT,
+        position: "top-right",
+      });
+      setPageLevelLoader(false);
       setFormData(initialFormData);
     }
 
     // console.log(data);
   }
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
   // =============================================================================
   return (
     <div className="bg-white relative">
@@ -70,7 +81,7 @@ export default function Register() {
               {/* login button or form ======================= */}
               {isRegistered ? (
                 <button
-                  className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
+                  className="mt-8 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
                 text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                 "
                   onClick={() => router.push("/login")}
@@ -116,7 +127,7 @@ export default function Register() {
                     disabled={!isFormValid()}
                     onClick={handleRegisterOnSubmit}
                   >
-                    {/* {pageLevelLoader ? (
+                    {pageLevelLoader ? (
                       <ComponentLevelLoader
                         text={"Registering"}
                         color={"#ffffff"}
@@ -124,8 +135,7 @@ export default function Register() {
                       />
                     ) : (
                       "Register"
-                    )} */}
-                    Register
+                    )}
                   </button>
                 </div>
               )}
@@ -133,6 +143,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 }

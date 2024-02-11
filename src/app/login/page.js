@@ -1,8 +1,7 @@
 "use client";
 
 import InputComponent from "@/components/FormElements/InputComponent";
-// import ComponentLevelLoader from "@/components/Loader/componentlevel";
-// import Notification from "@/components/Notification";
+import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { login } from "@/services/login";
 import { loginFormControls } from "@/utils";
@@ -10,7 +9,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import Loading from "./loading";
+import ComponentLevelLoader from "@/components/Loader/componentlevel";
 
 const initialFormdata = {
   email: "",
@@ -24,8 +23,8 @@ export default function Login() {
     setIsAuthUser,
     user,
     setUser,
-    // componentLevelLoader,
-    // setComponentLevelLoader,
+    componentLevelLoader,
+    setComponentLevelLoader,
   } = useContext(GlobalContext);
 
   const router = useRouter();
@@ -44,28 +43,30 @@ export default function Login() {
 
   // =====================================================
   async function handleLogin() {
-    // setComponentLevelLoader({ loading: true, id: "" });
+    setComponentLevelLoader({ loading: true, id: "" });
     const res = await login(formData);
 
     // console.log(res);
 
     // if login successful =================================
     if (res.success) {
-      // toast.success(res.message, {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
+      toast.success(res.message, {
+        // position: toast.POSITION.TOP_RIGHT,
+        position: "top-right",
+      });
       setIsAuthUser(true);
       setUser(res?.finalData?.user); // set data
       setFormData(initialFormdata); // reset form
       Cookies.set("token", res?.finalData?.token);
       localStorage.setItem("user", JSON.stringify(res?.finalData?.user));
-      // setComponentLevelLoader({ loading: false, id: "" });
+      setComponentLevelLoader({ loading: false, id: "" });
     } else {
       toast.error(res.message, {
-        position: toast.POSITION.TOP_RIGHT,
+        // position: toast.POSITION.TOP_RIGHT,
+        position: "top-right",
       });
       setIsAuthUser(false);
-      // setComponentLevelLoader({ loading: false, id: "" });
+      setComponentLevelLoader({ loading: false, id: "" });
     }
   }
 
@@ -108,7 +109,7 @@ export default function Login() {
                   disabled={!isValidForm()}
                   onClick={handleLogin}
                 >
-                  {/* {componentLevelLoader && componentLevelLoader.loading ? (
+                  {componentLevelLoader && componentLevelLoader.loading ? (
                     <ComponentLevelLoader
                       text={"Logging In"}
                       color={"#ffffff"}
@@ -118,8 +119,7 @@ export default function Login() {
                     />
                   ) : (
                     "Login"
-                  )} */}
-                  login
+                  )}
                 </button>
                 <div className="flex flex-col gap-2">
                   <p>New to website ?</p>
@@ -137,7 +137,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      {/* <Notification /> */}
+      <Notification />
     </div>
   );
 }
