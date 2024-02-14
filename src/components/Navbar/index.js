@@ -5,8 +5,11 @@ import React, { useContext, useEffect } from "react";
 import CommonModal from "../CommonModal";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
-function NavItems({ isModalView = false, isAdminView, router }) {
+function NavItems({ isModalView = false, isAdminView, router, pathname }) {
+  // console.log(pathname);
+  let currentPath = pathname;
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
@@ -15,7 +18,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
       id="nav-items"
     >
       <ul
-        className={`flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${
+        className={`flex p-4 flex-col md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-3 md:mt-0 md:border-0 bg-white ${
           isModalView ? "border-none" : "border border-gray-100"
         }`}
       >
@@ -31,7 +34,9 @@ function NavItems({ isModalView = false, isAdminView, router }) {
             ))
           : navOptions.map((item) => (
               <li
-                className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
+                className={`cursor-pointer block p-2 text-center text-gray-900 rounded hover:bg-black hover:text-white ${
+                  currentPath === item.path ? "bg-black text-white" : ""
+                }`}
                 key={item.id}
                 onClick={() => router.push(item.path)}
               >
@@ -96,10 +101,10 @@ export default function Navbar() {
           <div className="flex md:order-2 gap-3">
             {!isAdminView && isAuthUser ? (
               <>
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500">
                   Account
                 </button>
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500">
                   Cart
                 </button>
               </>
@@ -109,24 +114,25 @@ export default function Navbar() {
               isAdminView ? (
                 <button
                   onClick={() => router.push("/")}
-                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500"
                 >
                   Client View
                 </button>
               ) : (
-                <button
-                  onClick={() => router.push("admin-view")}
-                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                <Link
+                  href={"/admin-view"}
+                  // onClick={() => router.push("admin-view")}
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500"
                 >
                   Admin view
-                </button>
+                </Link>
               )
             ) : null}
             {/* log in/out button ======================================== */}
             {isAuthUser ? (
               <button
                 onClick={handleLogout}
-                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500"
               >
                 Logout
               </button>
@@ -163,7 +169,11 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-          <NavItems isAdminView={isAdminView} router={router} />
+          <NavItems
+            isAdminView={isAdminView}
+            router={router}
+            pathname={pathname}
+          />
         </div>
       </nav>
       {/* for mobile view */}

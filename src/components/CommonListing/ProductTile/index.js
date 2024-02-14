@@ -22,7 +22,7 @@ export default function ProductTile({ item }) {
           </p>
         </div>
       ) : null}
-      <div className="my-4 mx-auto flex w-11/12 flex-col items-start justify-between">
+      <div className="my-6 h-14 mx-auto flex w-11/12 flex-col items-start justify-between">
         <div className="mb-2 flex">
           {/* item price ================================= */}
           <p
@@ -40,7 +40,7 @@ export default function ProductTile({ item }) {
             <p className="mr-3 text-sm font-semibold">{`- (${item.priceDrop}%) off`}</p>
           ) : null}
         </div>
-        <h3 className="md-2 text-gray-400 text-sm">{item.name}</h3>
+        <h3 className="text-gray-700 text-md">{item.name}</h3>
       </div>
     </div>
   );
