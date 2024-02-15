@@ -24,8 +24,6 @@ export async function POST(req) {
 
     const isAuthUser = await AuthUser(req);
 
-    console.log(isAuthUser, "sangam");
-
     // only add product if admin
     if (isAuthUser?.role === "admin") {
       const extractData = await req.json();
