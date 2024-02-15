@@ -2,6 +2,7 @@
 
 import ComponentLevelLoader from "@/components/Loader/componentlevel";
 import { GlobalContext } from "@/context";
+import { addToCart } from "@/services/cart";
 // import { addToCart } from "@/services/cart";
 import { deleteAProduct } from "@/services/product";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,9 +15,9 @@ export default function ProductButton({ item }) {
     setCurrentUpdatedProduct,
     setComponentLevelLoader,
     componentLevelLoader,
-    // user,
-    // showCartModal,
-    // setShowCartModal,
+    user,
+    showCartModal,
+    setShowCartModal,
   } = useContext(GlobalContext);
   const router = useRouter();
 
@@ -40,30 +41,29 @@ export default function ProductButton({ item }) {
       });
       setComponentLevelLoader({ loading: false, id: "" });
     }
+    console.log(res);
   }
 
   // ==================================================
-  // async function handleAddToCart(getItem) {
-  //   setComponentLevelLoader({ loading: true, id: getItem._id });
+  async function handleAddToCart(getItem) {
+    setComponentLevelLoader({ loading: true, id: getItem._id });
 
-  //   const res = await addToCart({ productID: getItem._id, userID: user._id });
+    const res = await addToCart({ productID: getItem._id, userID: user._id });
 
-  //   if (res.success) {
-  //     toast.success(res.message, {
-  //       position: toast.POSITION.TOP_RIGHT,
-  //     });
-  //     setComponentLevelLoader({ loading: false, id: "" });
-  //     setShowCartModal(true);
-  //   } else {
-  //     toast.error(res.message, {
-  //       position: toast.POSITION.TOP_RIGHT,
-  //     });
-  //     setComponentLevelLoader({ loading: false, id: "" });
-  //     setShowCartModal(true);
-  //   }
-
-  //   console.log(res);
-  // }
+    if (res.success) {
+      toast.success(res.message, {
+        position: "top-right",
+      });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    } else {
+      toast.error(res.message, {
+        position: "top-right",
+      });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    }
+  }
 
   // ============================================================
   return isAdminView ? (
@@ -99,7 +99,7 @@ export default function ProductButton({ item }) {
     <>
       <button
         onClick={() => handleAddToCart(item)}
-        className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+        className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500"
       >
         {componentLevelLoader &&
         componentLevelLoader.loading &&
