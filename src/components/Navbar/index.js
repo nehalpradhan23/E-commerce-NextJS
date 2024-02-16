@@ -106,9 +106,12 @@ export default function Navbar() {
                 <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500">
                   Account
                 </button>
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500">
+                <Link
+                  href={"/cart"}
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500"
+                >
                   Cart
-                </button>
+                </Link>
               </>
             ) : null}
             {/* switch user admin/client ======================================== */}

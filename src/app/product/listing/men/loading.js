@@ -1,9 +1,15 @@
 import React from "react";
+import { PulseLoader } from "react-spinners";
 
 export default function Loading() {
   return (
-    <div className="flex text-6xl min-h-screen flex-col items-center justify-between p-24">
-      Loading
+    <div className="w-full min-h-screen flex justify-center items-center">
+      <PulseLoader
+        color={"#000000"}
+        loading={true}
+        size={30}
+        data-testid="loader"
+      />
     </div>
   );
 }
