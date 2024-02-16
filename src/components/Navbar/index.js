@@ -61,6 +61,7 @@ export default function Navbar() {
     currentUpdatedProduct,
     setCurrentUpdatedProduct,
     showCartModal,
+    setShowCartModal,
   } = useContext(GlobalContext);
 
   const router = useRouter();
@@ -106,12 +107,12 @@ export default function Navbar() {
                 <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500">
                   Account
                 </button>
-                <Link
-                  href={"/cart"}
+                <button
+                  onClick={() => setShowCartModal(true)}
                   className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:bg-gray-500"
                 >
                   Cart
-                </Link>
+                </button>
               </>
             ) : null}
             {/* switch user admin/client ======================================== */}

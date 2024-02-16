@@ -115,12 +115,28 @@ export default function CartModal() {
                       </h3>
                     </div>
                     {/* product price ======================== */}
-                    <p className="mt-1 text-sm text-gray-600">
+                    {/* <p className="mt-1 text-sm text-gray-600">
                       $
                       {cartItem &&
                         cartItem.productID &&
                         cartItem.productID.price}
-                    </p>
+                    </p> */}
+                    <div className="flex">
+                      <p
+                        className={`mr-3 text-sm font-semibold ${
+                          cartItem.productID.onSale === "yes"
+                            ? "line-through"
+                            : ""
+                        }`}
+                      >{`$ ${cartItem.productID.price}`}</p>
+                      {cartItem.productID.onSale === "yes" ? (
+                        <p className="mr-3 text-sm font-semibold text-red-700">{`$ ${(
+                          cartItem.productID.price -
+                          cartItem.productID.price *
+                            (cartItem.productID.priceDrop / 100)
+                        ).toFixed(2)}`}</p>
+                      ) : null}
+                    </div>
                   </div>
                   {/* delete item from cart ============================================== */}
                   <div className="flex flex-1 items-end justify-between text-sm">
