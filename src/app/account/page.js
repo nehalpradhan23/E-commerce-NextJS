@@ -48,6 +48,7 @@ export default function Account() {
   // ==========================================================
   async function handleAddOrUpdateAddress() {
     setComponentLevelLoader({ loading: true, id: "" });
+    // check if updating or adding new address
     const res =
       currentEditedAddressId !== null
         ? await updateAddress({
@@ -56,7 +57,7 @@ export default function Account() {
           })
         : await addNewAddress({ ...addressFormData, userID: user?._id });
 
-    console.log(res);
+    // console.log(res);
 
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: "" });
@@ -100,6 +101,7 @@ export default function Account() {
     });
     setCurrentEditedAddressId(getCurrentAddress._id);
   }
+  // ========================================================
 
   async function handleDelete(getCurrentAddressID) {
     setComponentLevelLoader({ loading: true, id: getCurrentAddressID });
@@ -165,7 +167,7 @@ export default function Account() {
                 <div className="mt-4 flex flex-col gap-4">
                   {addresses && addresses.length ? (
                     addresses.map((item) => (
-                      <div className="border p-6" key={item._id}>
+                      <div className="border p-6 bg-gray-200" key={item._id}>
                         <p>Name : {item.fullName}</p>
                         <p>Address : {item.address}</p>
                         <p>City : {item.city}</p>
@@ -174,13 +176,13 @@ export default function Account() {
                         {/* update and delete buttons ===================== */}
                         <button
                           onClick={() => handleUpdateAddress(item)}
-                          className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                          className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide hover:bg-gray-500"
                         >
                           Update
                         </button>
                         <button
                           onClick={() => handleDelete(item._id)}
-                          className="mt-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                          className="mt-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide hover:bg-gray-500"
                         >
                           {componentLevelLoader &&
                           componentLevelLoader.loading &&
