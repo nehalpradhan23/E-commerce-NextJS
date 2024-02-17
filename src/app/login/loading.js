@@ -6,7 +6,7 @@ export default function Loading() {
     <div className="w-full min-h-screen flex justify-center items-center">
       <PulseLoader
         color={"#000000"}
-        loading={pageLevelLoader}
+        loading={true}
         size={30}
         data-testid="loader"
       />
