@@ -8,7 +8,13 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import CartModal from "../CartModal";
 
-function NavItems({ isModalView = false, isAdminView, router, pathname }) {
+function NavItems({
+  isModalView = false,
+  isAdminView,
+  router,
+  pathname,
+  setShowCartModal,
+}) {
   // console.log(pathname);
   let currentPath = pathname;
   return (
@@ -28,7 +34,9 @@ function NavItems({ isModalView = false, isAdminView, router, pathname }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
-                onClick={() => router.push(item.path)}
+                onClick={() => {
+                  router.push(item.path);
+                }}
               >
                 {item.label}
               </li>
@@ -39,7 +47,10 @@ function NavItems({ isModalView = false, isAdminView, router, pathname }) {
                   currentPath === item.path ? "bg-black text-white" : ""
                 }`}
                 key={item.id}
-                onClick={() => router.push(item.path)}
+                onClick={() => {
+                  router.push(item.path);
+                  setShowCartModal(false);
+                }}
               >
                 {item.label}
               </li>
@@ -182,6 +193,7 @@ export default function Navbar() {
             isAdminView={isAdminView}
             router={router}
             pathname={pathname}
+            setShowCartModal={setShowCartModal}
           />
         </div>
       </nav>

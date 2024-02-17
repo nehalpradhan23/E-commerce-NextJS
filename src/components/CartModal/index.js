@@ -49,7 +49,7 @@ export default function CartModal() {
       localStorage.setItem("cartItems", JSON.stringify(res.data));
     }
 
-    console.log(res);
+    // console.log(res);
   }
 
   // =========================================================
