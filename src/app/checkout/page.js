@@ -32,7 +32,7 @@ export default function Checkout() {
 
   const publishableKey =
     "pk_test_51Ol2ZYSJpIPCk9lYDCVheNSbq1OEtyUb2g1Agu4pKF7KcI1lJMmzNBYP6p0P8TikD8H1vrcPBsIpmU7PR9GRxyCI00X2QmctGS";
-    
+
   const stripePromise = loadStripe(publishableKey);
 
   // console.log(cartItems);
@@ -135,31 +135,32 @@ export default function Checkout() {
   // =============================================================
 
   async function handleCheckout() {
-    const stripe = await stripePromise;
+    router.push("/checkout/stripe-error");
+    // const stripe = await stripePromise;
 
-    const createLineItems = cartItems.map((item) => ({
-      price_data: {
-        currency: "usd",
-        product_data: {
-          images: [item.productID.imageUrl],
-          name: item.productID.name,
-        },
-        unit_amount: item.productID.price * 100,
-      },
-      quantity: 1,
-    }));
+    // const createLineItems = cartItems.map((item) => ({
+    //   price_data: {
+    //     currency: "usd",
+    //     product_data: {
+    //       images: [item.productID.imageUrl],
+    //       name: item.productID.name,
+    //     },
+    //     unit_amount: item.productID.price * 100,
+    //   },
+    //   quantity: 1,
+    // }));
 
-    const res = await callStripeSession(createLineItems);
-    setIsOrderProcessing(true);
-    localStorage.setItem("stripe", true);
-    localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
+    // const res = await callStripeSession(createLineItems);
+    // setIsOrderProcessing(true);
+    // localStorage.setItem("stripe", true);
+    // localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
 
-    console.log(res, "stripe res");
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: res.id,
-    });
+    // console.log(res, "stripe res");
+    // const { error } = await stripe.redirectToCheckout({
+    //   sessionId: res.id,
+    // });
 
-    console.log(error);
+    // console.log(error);
   }
   // =============================================================
 

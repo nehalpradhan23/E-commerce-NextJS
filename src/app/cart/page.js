@@ -44,11 +44,11 @@ export default function Cart() {
             }))
           : [];
       setCartItems(updatedData);
+      console.log("cart successful");
       setPageLevelLoader(false);
       localStorage.setItem("cartItems", JSON.stringify(updatedData));
     }
-
-    // console.log(res);
+    setPageLevelLoader(false);
   }
 
   // ===========================================================
