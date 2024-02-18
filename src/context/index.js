@@ -34,7 +34,7 @@ export default function GlobalState({ children }) {
     address: "",
   });
 
-  const [checkOutFormData, setCheckOutFormData] = useState(
+  const [checkoutFormData, setCheckoutFormData] = useState(
     initialCheckoutFormData
   );
 
@@ -74,8 +74,8 @@ export default function GlobalState({ children }) {
         setAddresses,
         addressFormData,
         setAddressFormData,
-        checkOutFormData,
-        setCheckOutFormData,
+        checkoutFormData,
+        setCheckoutFormData,
       }}
     >
       {children}

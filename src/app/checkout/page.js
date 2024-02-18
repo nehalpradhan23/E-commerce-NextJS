@@ -4,8 +4,8 @@ import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address";
 // import { createNewOrder } from "@/services/order";
-// import { callStripeSession } from "@/services/stripe";
-// import { loadStripe } from "@stripe/stripe-js";
+import { callStripeSession } from "@/services/stripe";
+import { loadStripe } from "@stripe/stripe-js";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
@@ -31,7 +31,8 @@ export default function Checkout() {
   const params = useSearchParams();
 
   const publishableKey =
-    "pk_test_51NMv6ZSC6E6fnyMeRIEb9oEXdGRCC9yrBTT4xWHgcjWOuFcqFiAHErvaS50K1hl5t5WJXVGfLLWxvb705IWJhA3300yCcrMnlM";
+    "pk_test_51Ol2ZYSJpIPCk9lYDCVheNSbq1OEtyUb2g1Agu4pKF7KcI1lJMmzNBYP6p0P8TikD8H1vrcPBsIpmU7PR9GRxyCI00X2QmctGS";
+    
   const stripePromise = loadStripe(publishableKey);
 
   // console.log(cartItems);
@@ -51,58 +52,58 @@ export default function Checkout() {
     if (user !== null) getAllAddresses();
   }, [user]);
 
-  useEffect(() => {
-    async function createFinalOrder() {
-      const isStripe = JSON.parse(localStorage.getItem("stripe"));
+  // useEffect(() => {
+  //   async function createFinalOrder() {
+  //     const isStripe = JSON.parse(localStorage.getItem("stripe"));
 
-      if (
-        isStripe &&
-        params.get("status") === "success" &&
-        cartItems &&
-        cartItems.length > 0
-      ) {
-        setIsOrderProcessing(true);
-        const getCheckoutFormData = JSON.parse(
-          localStorage.getItem("checkoutFormData")
-        );
+  //     if (
+  //       isStripe &&
+  //       params.get("status") === "success" &&
+  //       cartItems &&
+  //       cartItems.length > 0
+  //     ) {
+  //       setIsOrderProcessing(true);
+  //       const getCheckoutFormData = JSON.parse(
+  //         localStorage.getItem("checkoutFormData")
+  //       );
 
-        const createFinalCheckoutFormData = {
-          user: user?._id,
-          shippingAddress: getCheckoutFormData.shippingAddress,
-          orderItems: cartItems.map((item) => ({
-            qty: 1,
-            product: item.productID,
-          })),
-          paymentMethod: "Stripe",
-          totalPrice: cartItems.reduce(
-            (total, item) => item.productID.price + total,
-            0
-          ),
-          isPaid: true,
-          isProcessing: true,
-          paidAt: new Date(),
-        };
+  //       const createFinalCheckoutFormData = {
+  //         user: user?._id,
+  //         shippingAddress: getCheckoutFormData.shippingAddress,
+  //         orderItems: cartItems.map((item) => ({
+  //           qty: 1,
+  //           product: item.productID,
+  //         })),
+  //         paymentMethod: "Stripe",
+  //         totalPrice: cartItems.reduce(
+  //           (total, item) => item.productID.price + total,
+  //           0
+  //         ),
+  //         isPaid: true,
+  //         isProcessing: true,
+  //         paidAt: new Date(),
+  //       };
 
-        const res = await createNewOrder(createFinalCheckoutFormData);
+  //       const res = await createNewOrder(createFinalCheckoutFormData);
 
-        if (res.success) {
-          setIsOrderProcessing(false);
-          setOrderSuccess(true);
-          toast.success(res.message, {
-            position: "top-right",
-          });
-        } else {
-          setIsOrderProcessing(false);
-          setOrderSuccess(false);
-          toast.error(res.message, {
-            position: "top-right",
-          });
-        }
-      }
-    }
+  //       if (res.success) {
+  //         setIsOrderProcessing(false);
+  //         setOrderSuccess(true);
+  //         toast.success(res.message, {
+  //           position: "top-right",
+  //         });
+  //       } else {
+  //         setIsOrderProcessing(false);
+  //         setOrderSuccess(false);
+  //         toast.error(res.message, {
+  //           position: "top-right",
+  //         });
+  //       }
+  //     }
+  //   }
 
-    createFinalOrder();
-  }, [params.get("status"), cartItems]);
+  //   createFinalOrder();
+  // }, [params.get("status"), cartItems]);
 
   // =============================================================
   function handleSelectedAddress(getAddress) {
@@ -153,6 +154,7 @@ export default function Checkout() {
     localStorage.setItem("stripe", true);
     localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
 
+    console.log(res, "stripe res");
     const { error } = await stripe.redirectToCheckout({
       sessionId: res.id,
     });
